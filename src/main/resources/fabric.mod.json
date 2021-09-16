@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "xray",
+  "version": "${version}",
+  "name": "Xray",
+  "description": "Xray",
+  "authors": [
+    "n643064"
+  ],
+  "contact": {},
+  "license": "LGPL-3.0",
+  "icon": "assets/xray/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "n643064.xray.client.XrayClient"
+    ]
+  },
+  "mixins": [
+    "xray.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "fabric": "*",
+    "minecraft": "1.17.1"
+  }
+}
