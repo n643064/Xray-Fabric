@@ -20,7 +20,9 @@ public class XrayClient implements ClientModInitializer
 {
     public static KeyBinding xkey, fkey;
     public static boolean XRAY = false;
+    public static boolean FULLBRIGHT = false;
     public static MinecraftClient MC;
+    public static boolean wasFullbrightDisabled = true;
     private double gamma;
     public static ArrayList<String> BLOCKS;
 
@@ -68,24 +70,50 @@ public class XrayClient implements ClientModInitializer
         {
             if (xkey.wasPressed() )
             {
-                XRAY = !XRAY;
-                if (XRAY)
-                {
-                    this.gamma = MC.options.getGamma().getValue();
-                    SimpleOption<Double> option = MC.options.getGamma();
-                    @SuppressWarnings("unchecked")
-                    SimpleOptionInterface<Double> optionInterface = (SimpleOptionInterface<Double>) (Object) option;
-                    optionInterface.forceSetValue(16d);
-                    MC.chunkCullingEnabled = false;
-                    MC.worldRenderer.reload();
-                } else
-                {
-                    MC.options.getGamma().setValue(gamma);
-                    MC.chunkCullingEnabled = true;
-                    MC.worldRenderer.reload();
-                }
+                toggleXray();
+            } else if (fkey.wasPressed())
+            {
+                if (wasFullbrightDisabled) wasFullbrightDisabled = false;
+                toggleFullbright();
             }
-
         });
+    }
+    private void toggleXray()
+    {
+        XRAY = !XRAY;
+        if (XRAY)
+        {
+            MC.chunkCullingEnabled = false;
+            MC.worldRenderer.reload();
+            if (!FULLBRIGHT)
+            {
+                wasFullbrightDisabled = true;
+                toggleFullbright();
+            }
+        } else
+        {
+            MC.chunkCullingEnabled = true;
+            MC.worldRenderer.reload();
+            if (wasFullbrightDisabled)
+            {
+                toggleFullbright();
+            }
+        }
+
+    }
+
+    private void toggleFullbright()
+    {
+        FULLBRIGHT = !FULLBRIGHT;
+        if (FULLBRIGHT)
+        {
+            this.gamma = MC.options.getGamma().getValue();
+            SimpleOption<Double> option = MC.options.getGamma();
+            @SuppressWarnings("unchecked")
+            SimpleOptionInterface<Double> optionInterface = (SimpleOptionInterface<Double>) (Object) option;
+            optionInterface.forceSetValue(16d);
+        } else {
+            MC.options.getGamma().setValue(gamma);
+        }
     }
 }

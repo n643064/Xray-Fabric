@@ -4,12 +4,12 @@
   "package": "n643064.xray.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-
   ],
   "client": [
-    "SimpleOptionMixin",
     "AbstractBlockMixin",
-    "BlockMixin"
+    "BackgroundRendererMixin",
+    "BlockMixin",
+    "SimpleOptionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
