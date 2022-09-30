@@ -18,7 +18,7 @@ public abstract class BlockMixin implements ItemConvertible
 {
 
     @Inject(at = @At("HEAD"), method = "shouldDrawSide", cancellable = true)
-    private static void onShouldDrawSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir)
+    private static void shouldDrawSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir)
     {
         if (XrayClient.XRAY)
         {

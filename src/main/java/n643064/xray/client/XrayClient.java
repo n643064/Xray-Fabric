@@ -26,6 +26,9 @@ public class XrayClient implements ClientModInitializer
     private double gamma;
     public static ArrayList<String> BLOCKS;
 
+
+    // TODO Liquid rendering, gui, block selection, split fullbright and nofog
+
     public static String[] VISIBLE = {
             Blocks.COAL_ORE.getTranslationKey(),
             Blocks.DEEPSLATE_COAL_ORE.getTranslationKey(),

@@ -1,5 +1,9 @@
 {
   "category.xray": "Xray",
   "key.xray": "Toggle Xray",
-  "key.fullbright": "Toggle Fullbright"
+  "key.fullbright": "Toggle Fullbright",
+  "key.config": "Open options screen",
+
+  "title.list": "Visible Blocks",
+  "title.config": "Xray Settings"
 }

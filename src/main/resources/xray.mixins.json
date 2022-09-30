@@ -8,8 +8,11 @@
   "client": [
     "AbstractBlockMixin",
     "BackgroundRendererMixin",
+    "BlockEntityRenderDispatcherMixin",
     "BlockMixin",
-    "SimpleOptionMixin"
+    "GameMenuScreenMixin",
+    "SimpleOptionMixin",
+    "TerrainRenderContextMixin"
   ],
   "injectors": {
     "defaultRequire": 1
