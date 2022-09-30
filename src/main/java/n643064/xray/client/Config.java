@@ -65,12 +65,10 @@ public class Config
         {
             if(Files.exists(Path.of(LIST_PATH)))
             {
-
                 try
                 {
                     FileReader reader = new FileReader(LIST_PATH);
                     BufferedReader bufferedReader = new BufferedReader(reader);
-                    String line;
                     XrayClient.BLOCKS = new ArrayList<>(bufferedReader.lines().toList());
                 } catch (Exception ignored) {}
             } else {
