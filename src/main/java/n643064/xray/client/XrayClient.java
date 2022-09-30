@@ -66,8 +66,6 @@ public class XrayClient implements ClientModInitializer
             return;
         }
 
-        // Test
-
         ClientTickEvents.START_CLIENT_TICK.register(client ->
         {
             if (xkey.wasPressed() )

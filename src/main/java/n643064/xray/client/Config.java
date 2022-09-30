@@ -20,18 +20,6 @@ public class Config
         System.out.println(DIR_PATH + LIST_PATH);
     }
 
-    public static boolean doesDirExist()
-    {
-        File file = new File(DIR_PATH);
-        return file.exists();
-    }
-
-    public static boolean doesListExist()
-    {
-        File file = new File(LIST_PATH);
-        return file.exists();
-    }
-
     public static boolean createDir()
     {
         try
@@ -73,9 +61,9 @@ public class Config
 
     public static boolean startup()
     {
-        if (Config.doesDirExist())
+        if (Files.exists(Path.of(DIR_PATH)))
         {
-            if(Config.doesListExist())
+            if(Files.exists(Path.of(LIST_PATH)))
             {
 
                 try
