@@ -5,6 +5,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,8 +21,8 @@ public class BlockEntityRenderDispatcherMixin
     {
         if (XrayClient.XRAY)
         {
-            String key = blockEntity.getCachedState().getBlock().getTranslationKey();
-            if (!XrayClient.BLOCKS.contains(key)) ci.cancel();
+            Identifier identifier = Registry.BLOCK.getId(blockEntity.getCachedState().getBlock());
+            if (!XrayClient.BLOCKS.contains(identifier)) ci.cancel();
         }
 
     }

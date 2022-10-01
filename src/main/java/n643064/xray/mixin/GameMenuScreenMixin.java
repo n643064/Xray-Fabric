@@ -26,7 +26,7 @@ public class GameMenuScreenMixin extends Screen
     {
         int x = this.width / 32;
         int y = this.height / 26;
-        this.addDrawableChild(new ButtonWidget(x, y, 60, 20, Text.translatable("title.list"), (button ->
+        this.addDrawableChild(new ButtonWidget(x, y, 60, 20, Text.translatable("title.config"), (button ->
         {
             ConfigScreen configScreen = new ConfigScreen();
             configScreen.previousScreen = this;

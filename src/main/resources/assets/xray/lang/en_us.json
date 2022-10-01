@@ -2,7 +2,7 @@
   "category.xray": "Xray",
   "key.xray": "Toggle Xray",
   "key.fullbright": "Toggle Fullbright",
-  "key.config": "Open options screen",
+  "key.nofog": "Toggle Fog Rendering",
 
   "title.list": "Visible Blocks",
   "title.config": "Xray Settings"

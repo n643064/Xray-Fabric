@@ -5,8 +5,10 @@ import n643064.xray.client.XrayClient;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +24,8 @@ public abstract class BlockMixin implements ItemConvertible
     {
         if (XrayClient.XRAY)
         {
-            String key = state.getBlock().getTranslationKey();
-            cir.setReturnValue(XrayClient.BLOCKS.contains(key));
+            Identifier identifier = Registry.BLOCK.getId(state.getBlock());
+            cir.setReturnValue(XrayClient.BLOCKS.contains(identifier));
         }
     }
 

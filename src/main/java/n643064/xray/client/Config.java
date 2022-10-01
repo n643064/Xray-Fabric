@@ -1,13 +1,14 @@
 package n643064.xray.client;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 
-import static n643064.xray.client.XrayClient.VISIBLE;
+import static n643064.xray.client.XrayClient.DEFAULT;
 
 public class Config
 {
@@ -33,7 +34,7 @@ public class Config
         return true;
     }
 
-    public static boolean createList(String[] list)
+    public static boolean createList(Identifier[] list)
     {
         System.out.println("Create list");
         File file = new File(LIST_PATH);
@@ -42,11 +43,12 @@ public class Config
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
 
-            for (String line : list)
+            for (Identifier line : list)
             {
-                writer.write(line + System.lineSeparator());
+                writer.write(line.getNamespace() + ':' + line.getPath() + System.lineSeparator());
             }
             writer.close();
+
 
         } catch (IOException ioException)
         {
@@ -55,9 +57,36 @@ public class Config
             return false;
         }
 
+        for (Identifier id : DEFAULT)
+        {
+            add(id);
+        }
         return true;
     }
 
+    private static void add(Identifier id)
+    {
+        if (Registry.FLUID.containsId(id))
+        {
+            XrayClient.FLUIDS.add(id);
+        } else if (Registry.BLOCK.containsId(id))
+        {
+            XrayClient.BLOCKS.add(id);
+        }
+    }
+
+    public static void readList() throws IOException
+    {
+
+        FileReader reader = new FileReader(LIST_PATH);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        String s = bufferedReader.readLine();
+        while (s != null)
+        {
+            add(new Identifier(s));
+            s = bufferedReader.readLine();
+        }
+    }
 
     public static boolean startup()
     {
@@ -67,17 +96,15 @@ public class Config
             {
                 try
                 {
-                    FileReader reader = new FileReader(LIST_PATH);
-                    BufferedReader bufferedReader = new BufferedReader(reader);
-                    XrayClient.BLOCKS = new ArrayList<>(bufferedReader.lines().toList());
+                   readList();
                 } catch (Exception ignored) {}
             } else {
-                return Config.createList(VISIBLE);
+                return Config.createList(DEFAULT);
             }
         } else {
             if (Config.createDir())
             {
-                return Config.createList(VISIBLE);
+                return Config.createList(DEFAULT);
             } else {
                 return false;
             }

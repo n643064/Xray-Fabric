@@ -6,11 +6,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -18,32 +18,29 @@ import java.util.ArrayList;
 @Environment(EnvType.CLIENT)
 public class XrayClient implements ClientModInitializer
 {
-    public static KeyBinding xkey, fkey;
+    public static KeyBinding xkey, fkey, nkey;
     public static boolean XRAY = false;
     public static boolean FULLBRIGHT = false;
+    public static boolean NOFOG = false;
     public static MinecraftClient MC;
     public static boolean wasFullbrightDisabled = true;
+    public static boolean wasNofogDisabled = true;
     private double gamma;
-    public static ArrayList<String> BLOCKS;
+    public static ArrayList<Identifier> BLOCKS = new ArrayList<>();
+    public static ArrayList<Identifier> FLUIDS = new ArrayList<>();
 
 
-    // TODO Liquid rendering, gui, block selection, split fullbright and nofog
+    // TODO config gui, block selection
 
-    public static String[] VISIBLE = {
-            Blocks.COAL_ORE.getTranslationKey(),
-            Blocks.DEEPSLATE_COAL_ORE.getTranslationKey(),
-            Blocks.IRON_ORE.getTranslationKey(),
-            Blocks.DEEPSLATE_IRON_ORE.getTranslationKey(),
-            Blocks.GOLD_ORE.getTranslationKey(),
-            Blocks.DEEPSLATE_GOLD_ORE.getTranslationKey(),
-            Blocks.REDSTONE_ORE.getTranslationKey(),
-            Blocks.DEEPSLATE_REDSTONE_ORE.getTranslationKey(),
-            Blocks.DIAMOND_ORE.getTranslationKey(),
-            Blocks.DEEPSLATE_DIAMOND_ORE.getTranslationKey(),
-            Blocks.EMERALD_ORE.getTranslationKey(),
-            Blocks.DEEPSLATE_EMERALD_ORE.getTranslationKey(),
-            Blocks.NETHER_QUARTZ_ORE.getTranslationKey(),
-            Blocks.NETHER_GOLD_ORE.getTranslationKey()
+    public static Identifier[] DEFAULT = {
+            new Identifier("minecraft", "iron_ore"),
+            new Identifier("minecraft", "deepslate_iron_ore"),
+            new Identifier("minecraft", "coal_ore"),
+            new Identifier("minecraft", "deepslate_coal_ore"),
+            new Identifier("minecraft", "chest"),
+            new Identifier("minecraft", "grass"),
+            new Identifier("minecraft", "lava"),
+
     };
 
     @Override
@@ -63,6 +60,14 @@ public class XrayClient implements ClientModInitializer
                 "category.xray"
         ));
 
+        nkey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.nofog",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_G,
+                "category.xray"
+        ));
+
+
         if (!Config.startup())
         {
             System.err.println("Couldn't set up config system, the mod will not initialize");
@@ -78,6 +83,10 @@ public class XrayClient implements ClientModInitializer
             {
                 if (wasFullbrightDisabled) wasFullbrightDisabled = false;
                 toggleFullbright();
+            } else if (nkey.wasPressed())
+            {
+                if (wasNofogDisabled) wasNofogDisabled = false;
+                NOFOG = !NOFOG;
             }
         });
     }
@@ -93,6 +102,11 @@ public class XrayClient implements ClientModInitializer
                 wasFullbrightDisabled = true;
                 toggleFullbright();
             }
+            if (!NOFOG)
+            {
+                wasNofogDisabled = true;
+                NOFOG = true;
+            }
         } else
         {
             MC.chunkCullingEnabled = true;
@@ -101,6 +115,7 @@ public class XrayClient implements ClientModInitializer
             {
                 toggleFullbright();
             }
+            NOFOG = !wasNofogDisabled;
         }
 
     }

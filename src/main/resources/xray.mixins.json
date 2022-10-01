@@ -10,6 +10,7 @@
     "BackgroundRendererMixin",
     "BlockEntityRenderDispatcherMixin",
     "BlockMixin",
+    "FluidRendererMixin",
     "GameMenuScreenMixin",
     "SimpleOptionMixin",
     "TerrainRenderContextMixin"
