@@ -1,14 +1,12 @@
 package n643064.xray.gui;
 
 import n643064.xray.client.Config;
-import n643064.xray.client.XrayClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
-import java.util.List;
 
 import static n643064.xray.client.XrayClient.MC;
 
@@ -31,7 +29,7 @@ public class ConfigScreen extends Screen
 
         int rightRow = this.width / 2;
         int leftRow = rightRow - 98;
-        int incrementY = this.height / 9;
+        int incrementY = 20;
 
 
         this.addDrawableChild(new ButtonWidget(leftRow, incrementY * 7, 98, 20, Text.translatable("button.back"), (button -> MC.setScreen(this.previousScreen))));
@@ -43,9 +41,10 @@ public class ConfigScreen extends Screen
         })));
         this.addDrawableChild(new ButtonWidget(leftRow, incrementY * 2, 98, 20, Text.translatable("button.listReset"), (button ->
         {
-            Config.createList(List.of(XrayClient.DEFAULT));
             try
             {
+                Config.copyDefaultList();
+                Config.clearArrayLists();
                 Config.readList();
             } catch (IOException ignored)
             {

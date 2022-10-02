@@ -20,7 +20,6 @@ public class XrayClient implements ClientModInitializer
 {
     public static KeyBinding xkey, fkey, nkey;
     public static boolean XRAY = false;
-    public static boolean CAVE_FINDER = false;
     public static boolean FULLBRIGHT = false;
     public static boolean NOFOG = false;
     public static MinecraftClient MC;
@@ -29,51 +28,6 @@ public class XrayClient implements ClientModInitializer
     private double gamma;
     public static ArrayList<Identifier> BLOCKS = new ArrayList<>();
     public static ArrayList<Identifier> FLUIDS = new ArrayList<>();
-
-
-    public static Identifier[] DEFAULT = {
-            new Identifier("minecraft", "coal_ore"),
-            new Identifier("minecraft", "deepslate_coal_ore"),
-            new Identifier("minecraft", "iron_ore"),
-            new Identifier("minecraft", "deepslate_iron_ore"),
-            new Identifier("minecraft", "gold_ore"),
-            new Identifier("minecraft", "deepslate_gold_ore"),
-            new Identifier("minecraft", "redstone_ore"),
-            new Identifier("minecraft", "deepslate_redstone_ore"),
-            new Identifier("minecraft", "lapis_ore"),
-            new Identifier("minecraft", "deepslate_lapis_ore"),
-            new Identifier("minecraft", "diamond_ore"),
-            new Identifier("minecraft", "deepslate_diamond_ore"),
-            new Identifier("minecraft", "emerald_ore"),
-            new Identifier("minecraft", "deepslate_emerald_ore"),
-            new Identifier("minecraft", "nether_gold_ore"),
-            new Identifier("minecraft", "nether_quartz_ore"),
-            new Identifier("minecraft", "coal_block"),
-            new Identifier("minecraft", "iron_block"),
-            new Identifier("minecraft", "gold_block"),
-            new Identifier("minecraft", "redstone_block"),
-            new Identifier("minecraft", "lapis_block"),
-            new Identifier("minecraft", "diamond_block"),
-            new Identifier("minecraft", "emerald_block"),
-
-            new Identifier("minecraft", "nether_portal"),
-            new Identifier("minecraft", "end_portal"),
-            new Identifier("minecraft", "end_portal_frame"),
-
-            new Identifier("minecraft", "crafting_table"),
-            new Identifier("minecraft", "furnace"),
-            new Identifier("minecraft", "blast_furnace"),
-            new Identifier("minecraft", "smoker"),
-            new Identifier("minecraft", "dropper"),
-            new Identifier("minecraft", "dispenser"),
-            new Identifier("minecraft", "barrel"),
-            new Identifier("minecraft", "chest"),
-            new Identifier("minecraft", "trapped_chest"),
-            new Identifier("minecraft", "ender_chest"),
-            new Identifier("minecraft", "lava"),
-            new Identifier("minecraft", "water"),
-
-    };
 
     @Override
     public void onInitializeClient()
@@ -98,7 +52,6 @@ public class XrayClient implements ClientModInitializer
                 GLFW.GLFW_KEY_G,
                 "category.xray"
         ));
-
 
         if (!Config.startup())
         {

@@ -26,9 +26,6 @@ public abstract class BlockMixin implements ItemConvertible
         {
             Identifier identifier = Registry.BLOCK.getId(state.getBlock());
             cir.setReturnValue(XrayClient.BLOCKS.contains(identifier) && world.getBlockState(pos.add(side.getVector())) != state);
-        } else if (XrayClient.CAVE_FINDER)
-        {
-            // TODO: implement cave finder
         }
     }
 

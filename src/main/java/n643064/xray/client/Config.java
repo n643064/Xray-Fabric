@@ -7,19 +7,26 @@ import net.minecraft.util.registry.Registry;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
-
-import static n643064.xray.client.XrayClient.DEFAULT;
 
 public class Config
 {
     private static final String pathSeparator = System.getProperty("file.separator");
-    public static String DIR_PATH = MinecraftClient.getInstance().runDirectory.getPath() + pathSeparator + "config" + pathSeparator + "xray";
-    public static String LIST_PATH = DIR_PATH + pathSeparator + "blocks.list";
+    public static final String DIR_PATH = MinecraftClient.getInstance().runDirectory.getPath() + pathSeparator + "config" + pathSeparator + "xray";
+    public static final String LIST_PATH = DIR_PATH + pathSeparator + "blocks.list";
 
     static
     {
         System.out.println(DIR_PATH + LIST_PATH);
+    }
+
+    public static void clearArrayLists()
+    {
+        XrayClient.FLUIDS = new ArrayList<>();
+        XrayClient.BLOCKS = new ArrayList<>();
+        System.gc();
     }
 
     public static boolean createDir()
@@ -35,9 +42,9 @@ public class Config
         return true;
     }
 
-    public static boolean createList(List<Identifier> list)
+    public static void createList(List<Identifier> list)
     {
-        File file = new File(LIST_PATH);
+        final File file = new File(LIST_PATH);
         try
         {
             if (!file.exists()) file.createNewFile();
@@ -54,10 +61,9 @@ public class Config
         {
             ioException.printStackTrace();
             System.err.println("Couldn't create block list");
-            return false;
+            return;
         }
         System.out.println("Created list file");
-        return true;
     }
 
     public static void add(Identifier id)
@@ -74,14 +80,22 @@ public class Config
     public static void readList() throws IOException
     {
 
-        FileReader reader = new FileReader(LIST_PATH);
-        BufferedReader bufferedReader = new BufferedReader(reader);
+        final FileReader reader = new FileReader(LIST_PATH);
+        final BufferedReader bufferedReader = new BufferedReader(reader);
         String s = bufferedReader.readLine();
         while (s != null)
         {
             add(new Identifier(s));
             s = bufferedReader.readLine();
         }
+    }
+
+    public static void copyDefaultList() throws IOException
+    {
+        final InputStream stream = Config.class.getResourceAsStream("/default.list");
+        final Path path = Path.of(LIST_PATH);
+        assert stream != null;
+        Files.copy(stream, path, StandardCopyOption.REPLACE_EXISTING);
     }
 
     public static boolean startup()
@@ -95,21 +109,27 @@ public class Config
                    readList();
                 } catch (Exception ignored) {}
             } else {
-                for (Identifier id : DEFAULT)
+                try
                 {
-                    add(id);
+                    copyDefaultList();
+                    readList();
+                } catch (IOException ignored)
+                {
+                    return false;
                 }
-                return Config.createList(List.of(DEFAULT));
             }
         } else {
             if (Config.createDir())
             {
 
-                for (Identifier id : DEFAULT)
+                try
                 {
-                    add(id);
+                    copyDefaultList();
+                    readList();
+                } catch (IOException ignored)
+                {
+                    return false;
                 }
-                return Config.createList(List.of(DEFAULT));
             } else {
                 return false;
             }
