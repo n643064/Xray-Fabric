@@ -7,6 +7,7 @@ import net.minecraft.util.registry.Registry;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static n643064.xray.client.XrayClient.DEFAULT;
 
@@ -34,13 +35,12 @@ public class Config
         return true;
     }
 
-    public static boolean createList(Identifier[] list)
+    public static boolean createList(List<Identifier> list)
     {
-        System.out.println("Create list");
         File file = new File(LIST_PATH);
         try
         {
-            file.createNewFile();
+            if (!file.exists()) file.createNewFile();
             FileWriter writer = new FileWriter(file);
 
             for (Identifier line : list)
@@ -56,15 +56,11 @@ public class Config
             System.err.println("Couldn't create block list");
             return false;
         }
-
-        for (Identifier id : DEFAULT)
-        {
-            add(id);
-        }
+        System.out.println("Created list file");
         return true;
     }
 
-    private static void add(Identifier id)
+    public static void add(Identifier id)
     {
         if (Registry.FLUID.containsId(id))
         {
@@ -99,12 +95,21 @@ public class Config
                    readList();
                 } catch (Exception ignored) {}
             } else {
-                return Config.createList(DEFAULT);
+                for (Identifier id : DEFAULT)
+                {
+                    add(id);
+                }
+                return Config.createList(List.of(DEFAULT));
             }
         } else {
             if (Config.createDir())
             {
-                return Config.createList(DEFAULT);
+
+                for (Identifier id : DEFAULT)
+                {
+                    add(id);
+                }
+                return Config.createList(List.of(DEFAULT));
             } else {
                 return false;
             }

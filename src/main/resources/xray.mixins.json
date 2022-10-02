@@ -13,7 +13,8 @@
     "FluidRendererMixin",
     "GameMenuScreenMixin",
     "SimpleOptionMixin",
-    "TerrainRenderContextMixin"
+    "TerrainRenderContextMixin",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
